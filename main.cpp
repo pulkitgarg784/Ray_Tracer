@@ -4,7 +4,20 @@
 
 #include <iostream>
 
+bool hit_sphere(const point3& center, double radius, const ray& r){
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0 * dot(oc, r.direction());
+    auto c = dot(oc, oc) - radius*radius;
+    auto discriminant = b*b - 4*a*c;
+    return (discriminant>0);
+}
+
 color ray_color(const ray& r){
+    // add a red sphere in the center
+    if (hit_sphere(point3(0,0,-1), 0.5, r)){
+        return color(1,0,0);
+    }
     vec3 unit_dir = unit_vector(r.direction());
     auto t = 0.5*(unit_dir.y() + 1);
     // lerp between white and blue for sky
@@ -12,11 +25,10 @@ color ray_color(const ray& r){
 }
 
 int main(){
-
     // Set initial consts
     // Image
     const auto aspect_ratio = 16.0 / 9.0;
-    const int img_width = 400;
+    const int img_width = 1080;
     const int img_height = static_cast<int>(img_width / aspect_ratio);
 
     // Camera
