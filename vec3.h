@@ -56,7 +56,7 @@ public:
 
 // Aliases
 using point3 = vec3;
-using color3 = vec3;
+using color = vec3;
 
 // Utility Functions
 
